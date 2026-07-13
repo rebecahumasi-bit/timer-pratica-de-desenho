@@ -54,6 +54,7 @@
   const cameraIconGroup = document.getElementById('cameraIconGroup');
   const cameraPanelLabel = document.getElementById('cameraPanelLabel');
   const btnRemoveDrawing = document.getElementById('btnRemoveDrawing');
+  const playHint = document.getElementById('playHint');
 
   // ---------- categories ----------
   function renderCategories() {
@@ -160,12 +161,14 @@
 
   function updatePlayButtonState() {
     btnPlay.classList.toggle('disabled', state.selectedSeconds == null);
+    playHint.hidden = state.selectedSeconds == null || state.isPlaying;
   }
 
   function togglePlay() {
     if (state.selectedSeconds == null) return;
     state.isPlaying = !state.isPlaying;
     setPlayIcon(state.isPlaying);
+    updatePlayButtonState();
     if (state.isPlaying) {
       state.lastTs = null;
       tick();

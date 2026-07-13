@@ -446,6 +446,19 @@ html, body {
   outline-offset: -2px;
 }
 
+.play-hint {
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  font-family: 'Martian Mono', monospace;
+  font-weight: 200;
+  font-variation-settings: "wdth" 100;
+  font-size: 13px;
+  letter-spacing: 0.2px;
+  color: white;
+  opacity: 0.6;
+}
+
 /* ---------- camera panel ---------- */
 .camera-panel {
   position: relative;
