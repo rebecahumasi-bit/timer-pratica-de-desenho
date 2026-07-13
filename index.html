@@ -110,6 +110,28 @@
     </div>
   </div>
 
+  <!-- category manager modal -->
+  <div class="modal-overlay" id="modalOverlay" hidden>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalCategoryTitle">
+      <div class="modal-header">
+        <div class="modal-heading">
+          <p class="modal-eyebrow">categoria</p>
+          <div class="modal-title-row">
+            <h2 class="modal-title" id="modalCategoryTitle">cenário</h2>
+            <button class="modal-category-toggle" id="modalCategoryToggle" aria-label="Ver outras categorias" title="Ver outras categorias">
+              <span>&lt;</span>
+            </button>
+          </div>
+          <div class="modal-category-dropdown" id="modalCategoryDropdown" hidden></div>
+        </div>
+        <button class="modal-close" id="modalClose" aria-label="Fechar">&times;</button>
+      </div>
+      <p class="modal-count" id="modalCount">30 fotos</p>
+      <div class="modal-grid" id="modalGrid"></div>
+      <input type="file" id="modalAddInput" accept="image/*" multiple hidden />
+    </div>
+  </div>
+
 <script src="script.js"></script>
 </body>
 </html>
