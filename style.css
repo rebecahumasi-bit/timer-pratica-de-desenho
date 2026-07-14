@@ -116,13 +116,76 @@ html, body {
 /* ---------- content area ---------- */
 .content-area {
   position: relative;
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 2vw, 20px);
+  background: var(--content-bg);
+  padding: clamp(20px, 3vw, 52px);
+}
+
+.content-area-tint {
+  position: absolute;
+  inset: 0;
+  background-color: transparent;
+  opacity: 0.22;
+  transition: background-color 0.5s ease, opacity 0.5s ease;
+  pointer-events: none;
+}
+
+/* white theme: the tint dominates to read as an actual light surface. Blocks
+   keep their real solid colors (no blend tricks) for maximum contrast — only
+   text/icon colors flip to dark so they stay readable against the light bg.
+   The camera ("anexe seu desenho aqui") panel matches the timer panel's light
+   card color so both blocks read as one consistent light-theme surface. */
+.content-area.theme-light .content-area-tint {
+  opacity: 0.92;
+}
+
+.content-area.theme-light .timer-panel::before,
+.content-area.theme-light .camera-panel-bg {
+  background: rgba(255, 255, 255, 0.55);
+  mix-blend-mode: normal;
+}
+
+.content-area.theme-light .preset-btn::before {
+  display: none;
+}
+
+.content-area.theme-light .filename-label,
+.content-area.theme-light .pagination-label,
+.content-area.theme-light .clock-digital,
+.content-area.theme-light .play-hint,
+.content-area.theme-light .camera-panel-label,
+.content-area.theme-light .transport-btn {
+  color: var(--content-bg);
+}
+
+.content-area.theme-light .play-hint,
+.content-area.theme-light .camera-panel-label {
+  opacity: 0.65;
+}
+
+.content-area.theme-light .transport-play.disabled { opacity: 0.4; }
+
+.content-area.theme-light .image-placeholder-crop {
+  outline: 1px solid rgba(0, 0, 0, 0.12);
+  outline-offset: -1px;
+}
+
+.content-row {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
   gap: clamp(16px, 2.5vw, 32px);
-  background: var(--content-bg);
-  padding: clamp(20px, 3vw, 52px);
+}
+
+/* color theme picker, aligned to the right edge of the content area (the block that wraps everything) */
+.theme-row {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
 }
 
 .canvas-column {
@@ -147,7 +210,6 @@ html, body {
 .image-placeholder {
   position: relative;
   width: 100%;
-  flex: 1;
   min-height: 320px;
   aspect-ratio: 431 / 694;
 }
@@ -184,7 +246,7 @@ html, body {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 16px;
 }
 
@@ -480,7 +542,6 @@ html, body {
   max-width: 340px;
   min-width: 220px;
   min-height: 320px;
-  background: var(--camera-bg);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -494,7 +555,6 @@ html, body {
   position: absolute;
   inset: 0;
   background: var(--camera-bg);
-  z-index: -1;
 }
 
 .camera-icon-group {

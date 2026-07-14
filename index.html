@@ -20,90 +20,96 @@
 
       <!-- content area -->
       <main class="content-area" data-name="content-area">
+        <div class="content-area-tint" id="contentAreaTint" aria-hidden="true"></div>
 
-        <div class="canvas-column">
-          <!-- canvas / image placeholder -->
-          <p class="filename-label" id="filenameLabel">img2349.png</p>
-          <div class="image-placeholder" id="imagePlaceholder" data-name="image-placeholder">
-            <div class="image-placeholder-fill" id="canvasFill"></div>
-            <div class="image-placeholder-crop">
-              <img id="canvasImage" class="canvas-image" src="assets/img/img2349.png" alt="imagem gerada" />
+        <div class="content-row">
+          <div class="canvas-column">
+            <!-- canvas / image placeholder -->
+            <p class="filename-label" id="filenameLabel">img2349.png</p>
+            <div class="image-placeholder" id="imagePlaceholder" data-name="image-placeholder">
+              <div class="image-placeholder-fill" id="canvasFill"></div>
+              <div class="image-placeholder-crop">
+                <img id="canvasImage" class="canvas-image" src="assets/img/img2349.png" alt="imagem gerada" />
+              </div>
+            </div>
+
+            <!-- footer controls -->
+            <div class="footer-controls" data-name="footer-controls">
+              <div class="playback-controls" data-name="playback-controls">
+                <div class="transport-buttons" data-name="transport-buttons">
+                  <button class="transport-btn transport-prev" id="btnPrev" title="Imagem anterior" aria-label="Imagem anterior">&lt;</button>
+                  <button class="transport-btn transport-play" id="btnPlay" title="Dar play no temporizador" aria-label="Dar play ou pausar o temporizador">
+                    <svg viewBox="0 0 16.4982 28.1405" fill="none" xmlns="http://www.w3.org/2000/svg" id="playIcon">
+                      <g id="icon-pause" style="display:none">
+                        <line x1="1.90729" y1="0" x2="1.90729" y2="28.1405" stroke="currentColor" stroke-width="3.81457"/>
+                        <line x1="14.5909" y1="0" x2="14.5909" y2="28.1405" stroke="currentColor" stroke-width="3.81457"/>
+                      </g>
+                      <g id="icon-play">
+                        <path d="M1.5 1 L15.5 14 L1.5 27 Z" fill="currentColor"/>
+                      </g>
+                    </svg>
+                  </button>
+                  <button class="transport-btn transport-next" id="btnNext" title="Próxima imagem" aria-label="Próxima imagem">&gt;</button>
+                </div>
+                <p class="pagination-label" id="paginationLabel">1 de 30</p>
+                <button class="btn-add" id="btnAdd" data-name="btn-add" title="Adicionar fotos a esta categoria" aria-label="Adicionar fotos a esta categoria">+</button>
+                <input type="file" id="fileInput" accept="image/*" multiple hidden />
+              </div>
             </div>
           </div>
 
-          <!-- footer controls -->
-          <div class="footer-controls" data-name="footer-controls">
-            <div class="playback-controls" data-name="playback-controls">
-              <div class="transport-buttons" data-name="transport-buttons">
-                <button class="transport-btn transport-prev" id="btnPrev" title="Imagem anterior" aria-label="Imagem anterior">&lt;</button>
-                <button class="transport-btn transport-play" id="btnPlay" title="Dar play no temporizador" aria-label="Dar play ou pausar o temporizador">
-                  <svg viewBox="0 0 16.4982 28.1405" fill="none" xmlns="http://www.w3.org/2000/svg" id="playIcon">
-                    <g id="icon-pause" style="display:none">
-                      <line x1="1.90729" y1="0" x2="1.90729" y2="28.1405" stroke="white" stroke-width="3.81457"/>
-                      <line x1="14.5909" y1="0" x2="14.5909" y2="28.1405" stroke="white" stroke-width="3.81457"/>
-                    </g>
-                    <g id="icon-play">
-                      <path d="M1.5 1 L15.5 14 L1.5 27 Z" fill="white"/>
-                    </g>
-                  </svg>
-                </button>
-                <button class="transport-btn transport-next" id="btnNext" title="Próxima imagem" aria-label="Próxima imagem">&gt;</button>
+          <!-- timer panel -->
+          <div class="timer-panel" data-name="timer-panel">
+            <div class="timer-content" data-name="timer-content">
+              <div class="clock-section" data-name="clock-section">
+                <div class="clock-face" data-name="clock-face">
+                  <div class="clock-outer-ring" data-name="clock-outer-ring"></div>
+                  <div class="clock-inner-circle" data-name="clock-inner-circle"></div>
+                  <div class="hour-hand-pivot" data-name="hour-hand-pivot">
+                    <div class="hour-hand" id="hourHand" data-name="hour-hand"></div>
+                  </div>
+                  <div class="minute-hand-pivot" data-name="minute-hand-pivot">
+                    <div class="minute-hand" id="minuteHand" data-name="minute-hand"></div>
+                  </div>
+                </div>
+                <p class="clock-digital" id="clockDigital">00:00</p>
               </div>
-              <p class="pagination-label" id="paginationLabel">1 de 30</p>
-              <button class="btn-add" id="btnAdd" data-name="btn-add" title="Adicionar fotos a esta categoria" aria-label="Adicionar fotos a esta categoria">+</button>
-              <input type="file" id="fileInput" accept="image/*" multiple hidden />
+              <div class="preset-buttons" id="presetButtons" data-name="preset-buttons">
+                <button class="preset-btn" data-seconds="30" data-name="preset-1min-a">30 seg</button>
+                <button class="preset-btn" data-seconds="60" data-name="preset-1min-b">1 min</button>
+                <button class="preset-btn" data-seconds="300" data-name="preset-1min-c">5 min</button>
+              </div>
+              <p class="play-hint" id="playHint" hidden>aperte o play para iniciar</p>
             </div>
+          </div>
 
-            <div class="pagination-dots" id="paginationDots" data-name="pagination-dots">
-              <button class="dot" data-color="#2D2838" style="--dot-fill:#2D2838" aria-label="Fundo do canva escuro (padrão)" title="#2D2838"></button>
-              <button class="dot" data-color="#191919" style="--dot-fill:#191919" aria-label="Fundo do canva preto" title="#191919"></button>
-              <button class="dot" data-color="#D9D9D9" style="--dot-fill:#D9D9D9" aria-label="Fundo do canva claro" title="#D9D9D9"></button>
+          <!-- camera / attach drawing panel -->
+          <div class="camera-panel" id="cameraPanel" data-name="camera-panel" tabindex="0" role="button" aria-label="Anexar seu desenho">
+            <div class="camera-panel-bg" data-name="camera-panel-bg"></div>
+            <div class="camera-icon-group" id="cameraIconGroup" data-name="camera-icon-group">
+              <svg viewBox="0 0 79.8613 56.7234" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g>
+                  <rect x="2" y="8.37106" width="75.8613" height="46.3524" rx="7" stroke="#4262E3" stroke-width="4"/>
+                  <circle cx="39.9307" cy="31.5472" r="11.0718" stroke="#4262E3" stroke-width="4"/>
+                  <path d="M4.77637 4C4.77637 1.79086 6.56723 0 8.77637 0H13.2109C15.4201 0 17.2109 1.79086 17.2109 4V10.1163H4.77637V4Z" fill="#4262E3"/>
+                  <circle cx="39.9309" cy="31.5472" r="3.18872" stroke="#4262E3" stroke-width="3"/>
+                </g>
+              </svg>
             </div>
+            <img id="drawingPreview" class="drawing-preview" alt="Desenho anexado" hidden />
+            <button id="btnRemoveDrawing" class="btn-remove-drawing" title="Remover desenho anexado" hidden>&times;</button>
+            <p class="camera-panel-label" id="cameraPanelLabel">anexe seu desenho aqui</p>
+            <input type="file" id="drawingInput" accept="image/*" hidden />
           </div>
         </div>
 
-        <!-- timer panel -->
-        <div class="timer-panel" data-name="timer-panel">
-          <div class="timer-content" data-name="timer-content">
-            <div class="clock-section" data-name="clock-section">
-              <div class="clock-face" data-name="clock-face">
-                <div class="clock-outer-ring" data-name="clock-outer-ring"></div>
-                <div class="clock-inner-circle" data-name="clock-inner-circle"></div>
-                <div class="hour-hand-pivot" data-name="hour-hand-pivot">
-                  <div class="hour-hand" id="hourHand" data-name="hour-hand"></div>
-                </div>
-                <div class="minute-hand-pivot" data-name="minute-hand-pivot">
-                  <div class="minute-hand" id="minuteHand" data-name="minute-hand"></div>
-                </div>
-              </div>
-              <p class="clock-digital" id="clockDigital">00:00</p>
-            </div>
-            <div class="preset-buttons" id="presetButtons" data-name="preset-buttons">
-              <button class="preset-btn" data-seconds="30" data-name="preset-1min-a">30 seg</button>
-              <button class="preset-btn" data-seconds="60" data-name="preset-1min-b">1 min</button>
-              <button class="preset-btn" data-seconds="300" data-name="preset-1min-c">5 min</button>
-            </div>
-            <p class="play-hint" id="playHint" hidden>aperte o play para iniciar</p>
+        <!-- color theme row: aligned to the right of the block that wraps everything -->
+        <div class="theme-row" data-name="theme-row">
+          <div class="pagination-dots" id="paginationDots" data-name="pagination-dots">
+            <button class="dot" data-color="#2D2838" style="--dot-fill:#2D2838" aria-label="Fundo do canva escuro (padrão)" title="#2D2838"></button>
+            <button class="dot" data-color="#191919" style="--dot-fill:#191919" aria-label="Fundo do canva preto" title="#191919"></button>
+            <button class="dot" data-color="#D9D9D9" style="--dot-fill:#D9D9D9" aria-label="Fundo do canva claro" title="#D9D9D9"></button>
           </div>
-        </div>
-
-        <!-- camera / attach drawing panel -->
-        <div class="camera-panel" id="cameraPanel" data-name="camera-panel" tabindex="0" role="button" aria-label="Anexar seu desenho">
-          <div class="camera-panel-bg" data-name="camera-panel-bg"></div>
-          <div class="camera-icon-group" id="cameraIconGroup" data-name="camera-icon-group">
-            <svg viewBox="0 0 79.8613 56.7234" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <g>
-                <rect x="2" y="8.37106" width="75.8613" height="46.3524" rx="7" stroke="#4262E3" stroke-width="4"/>
-                <circle cx="39.9307" cy="31.5472" r="11.0718" stroke="#4262E3" stroke-width="4"/>
-                <path d="M4.77637 4C4.77637 1.79086 6.56723 0 8.77637 0H13.2109C15.4201 0 17.2109 1.79086 17.2109 4V10.1163H4.77637V4Z" fill="#4262E3"/>
-                <circle cx="39.9309" cy="31.5472" r="3.18872" stroke="#4262E3" stroke-width="3"/>
-              </g>
-            </svg>
-          </div>
-          <img id="drawingPreview" class="drawing-preview" alt="Desenho anexado" hidden />
-          <button id="btnRemoveDrawing" class="btn-remove-drawing" title="Remover desenho anexado" hidden>&times;</button>
-          <p class="camera-panel-label" id="cameraPanelLabel">anexe seu desenho aqui</p>
-          <input type="file" id="drawingInput" accept="image/*" hidden />
         </div>
 
       </main>

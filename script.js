@@ -106,7 +106,7 @@
       : CATEGORIES[0].id,
     categories: Object.fromEntries(CATEGORIES.map((c, i) => [c.id, makeCategoryState(c.id, i)])),
     modalCategoryId: null,
-    canvasColor: persisted?.canvasColor || '#D9D9D9',
+    canvasColor: persisted?.canvasColor || '#2D2838',
     selectedSeconds: persisted?.selectedSeconds || null,
     isPlaying: false,
     duration: 0,
@@ -122,6 +122,9 @@
   const filenameLabel = document.getElementById('filenameLabel');
   const canvasImage = document.getElementById('canvasImage');
   const canvasFill = document.getElementById('canvasFill');
+  const contentAreaTint = document.getElementById('contentAreaTint');
+  const contentArea = document.querySelector('.content-area');
+  const LIGHT_THEME_COLOR = '#D9D9D9';
   const paginationLabel = document.getElementById('paginationLabel');
   const btnPrev = document.getElementById('btnPrev');
   const btnNext = document.getElementById('btnNext');
@@ -293,19 +296,25 @@
     }
   }
 
-  // ---------- colored dots -> canvas background ----------
+  // ---------- colored dots -> canvas background + subtle content-area tint ----------
+  function applyCanvasColor(color) {
+    canvasFill.style.backgroundColor = color;
+    contentAreaTint.style.backgroundColor = color;
+    contentArea.classList.toggle('theme-light', color.toUpperCase() === LIGHT_THEME_COLOR);
+  }
+
   Array.from(dotsWrap.querySelectorAll('.dot')).forEach((dot) => {
     if (dot.dataset.color.toUpperCase() === state.canvasColor.toUpperCase()) dot.classList.add('active');
     dot.addEventListener('click', () => {
       const color = dot.dataset.color;
       state.canvasColor = color;
-      canvasFill.style.backgroundColor = color;
+      applyCanvasColor(color);
       dotsWrap.querySelectorAll('.dot').forEach((d) => d.classList.remove('active'));
       dot.classList.add('active');
       persist();
     });
   });
-  canvasFill.style.backgroundColor = state.canvasColor;
+  applyCanvasColor(state.canvasColor);
 
   // ---------- timer / presets ----------
   Array.from(presetButtons.querySelectorAll('.preset-btn')).forEach((btn) => {
