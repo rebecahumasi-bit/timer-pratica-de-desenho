@@ -39,7 +39,7 @@
             currentIndex: cs.currentIndex,
           }]),
         ),
-        drawing: state.drawingDataUrl ? { dataUrl: state.drawingDataUrl, name: state.drawingName } : null,
+        drawings: state.drawings,
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     } catch (e) {
@@ -113,8 +113,8 @@
     remaining: 0,
     lastTs: null,
     timerHandle: null,
-    drawingDataUrl: persisted?.drawing?.dataUrl || null,
-    drawingName: persisted?.drawing?.name || null,
+    // drawings are keyed per category then per image key: { [catId]: { [imgKey]: {dataUrl, name} } }
+    drawings: persisted?.drawings || {},
   };
 
   // ---------- element refs ----------
@@ -204,6 +204,7 @@
       canvasImage.style.opacity = '0';
       filenameLabel.textContent = 'sem imagens nesta categoria';
       paginationLabel.textContent = '0 de 0';
+      refreshDrawingPanel();
       return;
     }
     if (cs.currentIndex > total) cs.currentIndex = total;
@@ -214,6 +215,7 @@
     canvasImage.src = img.url;
     filenameLabel.textContent = img.name;
     paginationLabel.textContent = `${cs.currentIndex} de ${total}`;
+    refreshDrawingPanel();
   }
 
   function goTo(index) {
@@ -250,6 +252,7 @@
     const cs = catState(catId);
     const [removedImg] = cs.images.splice(index - 1, 1);
     if (removedImg && removedImg.kind === 'default') cs.removed.add(removedImg.defaultIndex);
+    if (removedImg && state.drawings[catId]) delete state.drawings[catId][removedImg.key];
     if (catId === state.activeCategoryId) renderImage();
     persist();
   }
@@ -358,7 +361,13 @@
     state.timerHandle = requestAnimationFrame(tick);
   }
 
-  // ---------- attach drawing ----------
+  // ---------- attach drawing (tied to the specific photo currently shown) ----------
+  function currentImage() {
+    const cs = catState();
+    if (!cs || cs.currentIndex < 1) return null;
+    return cs.images[cs.currentIndex - 1] || null;
+  }
+
   function showDrawingPreview(dataUrl) {
     drawingPreview.src = dataUrl;
     drawingPreview.hidden = false;
@@ -367,29 +376,43 @@
     btnRemoveDrawing.hidden = false;
   }
 
+  function hideDrawingPreview() {
+    drawingPreview.hidden = true;
+    drawingPreview.removeAttribute('src');
+    cameraIconGroup.style.display = '';
+    cameraPanelLabel.style.display = '';
+    btnRemoveDrawing.hidden = true;
+  }
+
+  function refreshDrawingPanel() {
+    const img = currentImage();
+    const drawing = img ? state.drawings[state.activeCategoryId]?.[img.key] : null;
+    if (drawing) showDrawingPreview(drawing.dataUrl);
+    else hideDrawingPreview();
+  }
+
   cameraPanel.addEventListener('click', () => drawingInput.click());
   cameraPanel.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); drawingInput.click(); }
   });
   drawingInput.addEventListener('change', async () => {
     const file = drawingInput.files && drawingInput.files[0];
-    if (!file) return;
+    const img = currentImage();
+    if (!file || !img) return;
     const dataUrl = await fileToResizedDataUrl(file, 1400, 0.88);
-    state.drawingDataUrl = dataUrl;
-    state.drawingName = file.name;
+    const catId = state.activeCategoryId;
+    if (!state.drawings[catId]) state.drawings[catId] = {};
+    state.drawings[catId][img.key] = { dataUrl, name: file.name };
     showDrawingPreview(dataUrl);
     drawingInput.value = '';
     persist();
   });
   btnRemoveDrawing.addEventListener('click', (e) => {
     e.stopPropagation();
-    state.drawingDataUrl = null;
-    state.drawingName = null;
-    drawingPreview.hidden = true;
-    drawingPreview.removeAttribute('src');
-    cameraIconGroup.style.display = '';
-    cameraPanelLabel.style.display = '';
-    btnRemoveDrawing.hidden = true;
+    const img = currentImage();
+    const catId = state.activeCategoryId;
+    if (img && state.drawings[catId]) delete state.drawings[catId][img.key];
+    hideDrawingPreview();
     persist();
   });
 
@@ -498,5 +521,4 @@
   renderImage();
   setPlayIcon(state.isPlaying);
   restartTimer();
-  if (state.drawingDataUrl) showDrawingPreview(state.drawingDataUrl);
 })();
